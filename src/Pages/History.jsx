@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {Link} from 'react-router-dom'
-import { getVideoHistoryAPI } from '../Services/allAPI';
+import { getVideoHistoryAPI,removeHistoryAPI } from '../Services/allAPI';
+
 function History() {
   const [videoHistory,setVideoHistory] = useState([])
   console.log(videoHistory);
@@ -11,6 +12,14 @@ function History() {
     try{
       const result = await getVideoHistoryAPI()
       setVideoHistory(result.data)
+    }catch(err){
+      console.log(err);
+    }
+  }
+  const handleRemoveHistory = async (videoId) =>{
+    try{
+      await removeHistoryAPI(videoId)
+      getAllHistory()
     }catch(err){
       console.log(err);
     }
@@ -33,11 +42,21 @@ function History() {
           </tr>
         </thead>
         <tbody>
-          <td>1</td>
-          <td>Avesham Trailer</td>
-          <td><a href="https://www.youtube.com/embed/L0yEMl8PXnw" target='_blank'>https://www.youtube.com/embed/L0yEMl8PXnw</a></td>
-          <td>22/4/2024 10:54AM</td>
-          <td><button className='btn'><i className='fa-solid fa-trash text-danger'></i></button></td>
+          {
+            videoHistory.length>0?
+            videoHistory?.map((item,index)=>(
+              <tr key={item?.id}>
+              <td>{index+1}</td>
+              <td>{item?.caption}</td>
+              <td><a href={item?.youtubeURL} target='_blank'>{item?.youtubeURL}</a></td>
+              <td>{item?.timeStamp}</td>
+              <td><button onClick={()=>handleRemoveHistory(item?.id)} className='btn'><i className='fa-solid fa-trash text-danger'></i></button></td>
+              </tr>
+            ))
+            :
+            <div className='text-danger fw-bolder'>Your Watch history is empty!!!</div>
+          }
+          
         </tbody>
       </table>
       </div>
