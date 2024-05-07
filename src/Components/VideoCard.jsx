@@ -3,7 +3,7 @@ import {  Card, Modal } from 'react-bootstrap'
 import { removeVideoAPI, saveHistoryAPI } from '../Services/allAPI';
 
 
-function VideoCard({displaydata,setDeleteResponse}) {
+function VideoCard({displaydata,setDeleteResponse,insideCategory}) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -28,15 +28,19 @@ function VideoCard({displaydata,setDeleteResponse}) {
       console.log(err);
     }
   }
+  const dragStarted = (e,videoId)=>{
+    console.log(`Dragging started with video id: ${videoId}`);
+    e.dataTransfer.setData("videoID",videoId)
+  }
 
   return (
     <>
-    <Card>
+    <Card draggable={true} onDragStart={e=>dragStarted(e,displaydata?.id)}>
       <Card.Img onClick={handleShow}  height={'200px'} variant="top" src={displaydata?.imgURL} />
       <Card.Body>
         <Card.Title className='d-flex justify-content-between'> 
         <p className='pt-2'>{displaydata?.caption}</p>
-        <button onClick={()=>handleRemoveVideo(displaydata?.id)} className='btn'><i className="fa-solid fa-trash text-danger fs-5"></i></button>
+      {!insideCategory && <button onClick={()=>handleRemoveVideo(displaydata?.id)} className='btn'><i className="fa-solid fa-trash text-danger fs-5"></i></button>}
         </Card.Title>
 
       </Card.Body>

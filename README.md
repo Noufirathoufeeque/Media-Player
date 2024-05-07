@@ -135,5 +135,14 @@ JSON SERVER
 2. Create package.json file inside the folder using the command : npm init -your
 3. Create db.json file
 4. Create resources for the file, a resource is a file that to be permenently stored in the json
-5. to run json file using json server : npm i json-server
+5. to run json file using json server : npm i json-server/npm i json-server@0.17.4
 6. to run json file in local host: npx json-server db.json
+------------------------------------------------------------------------------------------------------
+Deploying A JSON FILE using node JS
+----------------------------------------------------------------------------------
+1. Create index.js file in server folder
+2.update script in package.json file as "start":"node index.js"
+3.create .gitignore file and add node module folder
+4. define json-server to run json file in index.js
+   -import json-server
+   -create server run json file using create() method of json server
